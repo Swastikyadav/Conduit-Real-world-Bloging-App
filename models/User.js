@@ -23,6 +23,10 @@ var userSchema = new Schema({
     },
     following: {
         type: []
+    },
+    articlesId: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Article'
     }
 });
 
@@ -30,8 +34,8 @@ var userSchema = new Schema({
 userSchema.pre('save', function(next) {
     if(this.password) {
         this.password = bcrypt.hashSync(this.password, 10);
-        next();
     }
+    next();
 });
 
 // Hash password while comparing at the time of login.
