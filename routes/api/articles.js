@@ -42,19 +42,37 @@ router.post('/new', (req, res, next) => {
 // Update an existing article.
 router.put('/update/:id', (req, res, next) => {
     var id = req.params.id;
-    Article.findByIdAndUpdate(id, req.body, {new: true}, (err, updatedArticle) => {
-        if(err) return res.json({msg: "Err while upadating article"});
-        return res.json({updatedArticle});
+    var loggedInUser = req.userid;
+    // Only creator can edit the article.
+    Article.findById(id, (err, article) => {
+        if(err) return res.json({msg: "Err while finding article"});
+        if(loggedInUser == article.userId) {
+            Article.findByIdAndUpdate(id, req.body, {new: true}, (err, updatedArticle) => {
+                if(err) return res.json({msg: "Err while upadating article"});
+                return res.json({updatedArticle});
+            });
+        } else {
+            return res.json({msg: "You can't edit this post"});
+        }
     });
 });
 
 // Delete an article.
 router.delete('/delete/:id', (req, res, next) => {
     var id = req.params.id;
-    Article.findByIdAndDelete(id, (err, deletedArticle) => {
-        if(err) return res.json({msg: "Err while deleting article"});
-        // Later: Also delete all comments related to this article.
-        return res.json({msg: "Article deleted successfully"});
+    var loggedInUser = req.userid;
+    // Only creator can delete the article.
+    Article.findById(id, (err, article) => {
+        if(err) return res.json({msg: "Err while finding article"});
+        if(loggedInUser == article.userId) {
+            Article.findByIdAndDelete(id, (err, deletedArticle) => {
+                if(err) return res.json({msg: "Err while deleting article"});
+                // Later: Also delete all comments related to this article.
+                return res.json({msg: "Article deleted successfully"});
+            });
+        } else {
+            return res.json({msg: "You can't delete this post"});
+        }
     });
 });
 
