@@ -1,6 +1,7 @@
 var express = require('express');
 var User = require('../../models/User');
 var jwt = require('jsonwebtoken');
+var authToken = require('../../modules/verifyToken');
 var router = express.Router();
 
 // Registration
@@ -24,6 +25,28 @@ router.post('/login', (req, res, next) => {
         var token = jwt.sign({userId: user._id}, process.env.secret);
         return res.json({token});
     });
+});
+
+router.use(authToken.verifyToken);
+
+// Profile setting.
+router.put('/profile-setting', (req, res, next) => {
+    // User.update({_id: req.userid}, req.body, {upsert: true, runValidators: true}, (err, updatedUser) => {
+    //     if(err) return res.json({msg: "Err while updating user's setting.", err});
+    //     return res.json({msg: "User settings saved", updatedUser});
+    // });
+    User.findById(req.userid, (err, user) => {
+        if(err) return res.json({msg: "Err while finding user to update profile", err});
+        req.body.password ? user.password = req.body.password : "";
+        req.body.username ? user.username = req.body.username : "";
+        req.body.email ? user.email = req.body.email : "";
+        req.body.bio ? user.bio = req.body.bio : "";
+        req.body.profilePicture ? user.profilePicture = req.body.profilePicture : "";
+        user.save((err, updatedUser) => {
+            if(err) return res.json({msg: "Err while updating user's profile setting"});
+            return res.json({msg: "User setting saved", updatedUser});
+        })
+    })
 });
 
 module.exports = router;
