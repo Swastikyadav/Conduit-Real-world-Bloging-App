@@ -27,6 +27,10 @@ var userSchema = new Schema({
     articlesId: {
         type: [Schema.Types.ObjectId],
         ref: 'Article'
+    },
+    commentsId: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Comment'
     }
 });
 

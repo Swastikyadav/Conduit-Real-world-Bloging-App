@@ -1,6 +1,7 @@
 var express = require('express');
 var Article = require('../../models/Article');
 var User = require('../../models/User');
+var Comment = require('../../models/Comment');
 var authToken = require('../../modules/verifyToken');
 var router = express.Router();
 
@@ -17,7 +18,6 @@ router.get('/:id', (req, res, next) => {
     var id = req.params.id;
     Article.findById(id, (err, article) => {
         if(err) return res.json({msg: "Err while reading single article", err});
-        // Later: Find comments related to this perticular article.
         return res.json({article});
     });
 });
@@ -67,8 +67,16 @@ router.delete('/delete/:id', (req, res, next) => {
         if(loggedInUser == article.userId) {
             Article.findByIdAndDelete(id, (err, deletedArticle) => {
                 if(err) return res.json({msg: "Err while deleting article"});
-                // Later: Also delete all comments related to this article.
-                return res.json({msg: "Article deleted successfully"});
+                // Also delete all comments related to this article.
+                Comment.find({articleId: id}, (err, comments) => {
+                    if(err) return res.json({msg: "Err while finding comments of deleted article."});
+                    comments.forEach(e => {
+                        Comment.findByIdAndDelete(e, (err, deletedComments) => {
+                            if(err) return res.json({msg: "Err while deleting comments along with article."});
+                            return res.json({msg: "Article deleted along with comments."});
+                        });
+                    });
+                });
             });
         } else {
             return res.json({msg: "You can't delete this post"});
