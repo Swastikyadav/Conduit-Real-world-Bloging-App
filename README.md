@@ -39,7 +39,7 @@ Your Feed - ```api/articles/following/feed``` (get request)
 ## Comments Routes
 
 ### Crud on Comments
-Read comments with articleId - ```api/comments/:articleId``` (get request)
+Read comments with articleId - ```api/comments/:articleId``` (get request) </br>
 &nbsp;
 Add new comment to an article - ```api/comments/add/:articleId``` (post request)
 &nbsp;
