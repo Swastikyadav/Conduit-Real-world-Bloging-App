@@ -22,7 +22,7 @@ var userSchema = new Schema({
         type: []
     },
     following: {
-        type: []
+        type: [String]
     },
     articlesId: {
         type: [Schema.Types.ObjectId],

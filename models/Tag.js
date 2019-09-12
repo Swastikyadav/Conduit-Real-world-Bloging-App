@@ -7,6 +7,10 @@ var tagSchema = new Schema({
         required: true,
         ref: 'Article'
     },
+    tagText: {
+        type: String,
+        required: true
+    }
 });
 
 var Tag = mongoose.model('Tag', tagSchema);

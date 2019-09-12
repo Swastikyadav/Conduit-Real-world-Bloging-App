@@ -49,4 +49,25 @@ router.put('/profile-setting', (req, res, next) => {
     })
 });
 
+// Follow & Unfollow feature.
+router.put('/follow/:userId', (req, res, next) => {
+    var id = req.params.userId;
+    User.findById(req.userid, (err, user) => {
+        if(err) return res.json({msg: "Err while finding user to follow", err});
+        if(user.following.includes(id)) {
+            User.findByIdAndUpdate(req.userid, {$pull: {following: id}}, {new: true}, (err, updatedUser) => {
+                if(err) return res.json({msg: "Err while updating following of user", err});
+                var follow = user.following.length;
+                return res.json({follow});
+            });
+        } else {
+            User.findByIdAndUpdate(req.userid, {$push: {following: id}}, {new: true}, (err, updatedUser) => {
+                if(err) return res.json({msg: "Err while updating following of user", err});
+                var follow = user.following.length;
+                return res.json({follow});
+            });
+        }
+    });
+});
+
 module.exports = router;

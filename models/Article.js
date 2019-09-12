@@ -15,8 +15,8 @@ var articleSchema = new Schema({
         required: true
     },
     tag: {
-        type: [Schema.Types.ObjectId],
-        ref: 'Tag'
+        type: String
+        // ref: 'Tag'
     },
     commentsId: {
         type: [Schema.Types.ObjectId],
@@ -25,6 +25,10 @@ var articleSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
         required: true,
+        ref: 'User'
+    },
+    favourites: {
+        type: [Schema.Types.ObjectId],
         ref: 'User'
     }
 });
