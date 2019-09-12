@@ -5,7 +5,7 @@ A real world blog app. A clone of Medium.
 
 ### Registration & LogIn
 Register - ```api/users/register``` (post request)
-&nbsp;
+</br>
 LogIn - ```api/users/login``` (post request)
 
 ### Profile Setting
@@ -18,16 +18,16 @@ Follow & UnFollow - ```api/users/follow/:userId``` (put request)
 
 ### Read articles
 Read all articles - ```api/articles``` (get request)
-&nbsp;
+</br>
 Read single article - ```api/articles/:articleId``` (get request)
-&nbsp;
+</br>
 Read article by tag - ```api/articles/tag/:tag``` (get request)
 
 ### Crud Operation on Article
 Create new article - ```api/articles/new``` (post request) 
-&nbsp;
+</br>
 Update an existing article - ```api/articles/update/:articleId``` (put request)
-&nbsp;
+</br>
 Delete an article - ```api/articles/delete/:articleId``` (delete request)
 
 ### Favourite / Like an Article
@@ -39,10 +39,10 @@ Your Feed - ```api/articles/following/feed``` (get request)
 ## Comments Routes
 
 ### Crud on Comments
-Read comments with articleId - ```api/comments/:articleId``` (get request) </br>
-&nbsp;
+Read comments with articleId - ```api/comments/:articleId``` (get request)
+</br>
 Add new comment to an article - ```api/comments/add/:articleId``` (post request)
-&nbsp;
+</br>
 Delete Comments of an article - ```api/comments/delete/:commentId``` (delete request)
 
 #### Author - Swastik Yadav.
