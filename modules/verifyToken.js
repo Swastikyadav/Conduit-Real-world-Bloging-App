@@ -6,7 +6,7 @@ exports.verifyToken = function(req, res, next) {
     if(token) {
         jwt.verify(token, process.env.secret, function(err, decoded) {
             if(err) return res.json(err);
-            req.userid = decoded.userId;
+            req.userId = decoded.userId;
             console.log(req.userid);
             next();
         });

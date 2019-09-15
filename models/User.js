@@ -19,7 +19,7 @@ var userSchema = new Schema({
     profilePicture: String,
     bio: String,
     followers: {
-        type: []
+        type: [String]
     },
     following: {
         type: [String]

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var URLSlug = require('mongoose-url-slugs');
 
 var articleSchema = new Schema({
     title: {
@@ -33,6 +34,8 @@ var articleSchema = new Schema({
         ref: 'User'
     }
 });
+
+articleSchema.plugin(URLSlug('title', {field: 'slug'}));
 
 var Article = mongoose.model('Article', articleSchema);
 module.exports = Article;

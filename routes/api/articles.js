@@ -9,47 +9,45 @@ var router = express.Router();
 // Read all articles.
 router.get('/', (req, res, next) => {
     Article.find({}, (err, articles) => {
-        if(err) return res.json({msg: "Err while reading articles"});
+        if(err) return res.json({success: false, err});
         return res.json({articles});
     })
 });
 
 // Read single article.
-router.get('/:id', (req, res, next) => {
-    var id = req.params.id;
-    Article.findById(id, (err, article) => {
-        if(err) return res.json({msg: "Err while reading single article", err});
+router.get('/:slug', (req, res, next) => {
+    var slug = req.params.slug;
+    Article.findOne({slug}, (err, article) => {
+        if(err) return res.json({success: false, err});
         return res.json({article});
     });
 });
 
-// Get articles form tag.
-router.get('/tag/:tag', (req, res, next) => {
-    var tag = req.params.tag;
-    Tag.findOne({tagText: tag}, (err, tag) => {
-        if(err) return res.json({msg: "Err while finding tag", err});
-        var articleIdArr = tag.articleId;
-        var articleArr = [];
-        articleIdArr.forEach(e => {
-            Article.find({_id: e}, (err, article) => {
-                if(err) return res.json({msg: "Err while finding articles by tag."});
-                articleArr.push(article);
-                articleArr.length == articleIdArr.length ? res.json({articleArr}) : "";
-            });
-        });
-    });
-});
+// // Get articles form tag.
+// router.get('/tag/:tag', (req, res, next) => {
+//     var tag = req.params.tag;
+//     Tag.findOne({tagText: tag}, (err, tag) => {
+//         if(err) return res.json({msg: "Err while finding tag", err});
+//         var articleIdArr = tag.articleId;
+//         var articleArr = [];
+//         articleIdArr.forEach(e => {
+//             Article.find({_id: e}, (err, article) => {
+//                 if(err) return res.json({msg: "Err while finding articles by tag."});
+//                 articleArr.push(article);
+//                 articleArr.length == articleIdArr.length ? res.json({articleArr}) : "";
+//             });
+//         });
+//     });
+// });
 
 // Only logged in user can access the routes below.
 router.use(authToken.verifyToken);
 
 // Creating newArticle.
-router.post('/new', (req, res, next) => {
-    req.body.userId = req.userid;
-    // console.log(req.body);
+router.post('/', (req, res, next) => {
+    req.body.userId = req.userId;
     Article.create(req.body, (err, newArticle) => {
         if(err) return res.json({msg: "Err while creating new article", err});
-
         // Creating Tags.
         if(newArticle.tag) {
             var tagArr = newArticle.tag.split(',');
@@ -78,15 +76,15 @@ router.post('/new', (req, res, next) => {
 });
 
 // Update an existing article.
-router.put('/update/:id', (req, res, next) => {
-    var id = req.params.id;
-    var loggedInUser = req.userid;
+router.put('/:slug', (req, res, next) => {
+    var slug = req.params.slug;
+    var loggedInUser = req.userId;
     // Only creator can edit the article.
-    Article.findById(id, (err, article) => {
-        if(err) return res.json({msg: "Err while finding article"});
+    Article.findOne({slug}, (err, article) => {
+        if(err) return res.json({success: false, err});
         if(loggedInUser == article.userId) {
-            Article.findByIdAndUpdate(id, req.body, {new: true}, (err, updatedArticle) => {
-                if(err) return res.json({msg: "Err while upadating article"});
+            Article.findOneAndUpdate({slug}, req.body, {new: true}, (err, updatedArticle) => {
+                if(err) return res.json({success: false, err});
                 return res.json({updatedArticle});
             });
         } else {
@@ -96,25 +94,34 @@ router.put('/update/:id', (req, res, next) => {
 });
 
 // Delete an article.
-router.delete('/delete/:id', (req, res, next) => {
-    var id = req.params.id;
-    var loggedInUser = req.userid;
+router.delete('/:slug', (req, res, next) => {
+    var slug = req.params.slug;
+    var loggedInUser = req.userId;
     // Only creator can delete the article.
-    Article.findById(id, (err, article) => {
-        if(err) return res.json({msg: "Err while finding article"});
+    Article.findOne({slug}, (err, article) => {
+        if(err) return res.json({success: false, err});
+        if(!article) return res.json({msg: "No article found to delete"});
         if(loggedInUser == article.userId) {
-            Article.findByIdAndDelete(id, (err, deletedArticle) => {
-                if(err) return res.json({msg: "Err while deleting article"});
+            Article.findOneAndDelete({slug}, (err, deletedArticle) => {
+                if(err) return res.json({success: false, err});
                 // Also delete all comments related to this article.
-                Comment.find({articleId: id}, (err, comments) => {
-                    if(err) return res.json({msg: "Err while finding comments of deleted article."});
-                    comments.forEach(e => {
-                        Comment.findByIdAndDelete(e, (err, deletedComments) => {
-                            if(err) return res.json({msg: "Err while deleting comments along with article."});
-                            return res.json({msg: "Article deleted along with comments."});
-                        });
+                if(article.commentsId.length) {
+                    Comment.find({articleId: article._id}, (err, comments) => {
+                        if(err) return res.json({success: false, err});
+                        if(comments.length) {
+                            comments.forEach(e => {
+                                Comment.findByIdAndDelete(e, (err, deletedComments) => {
+                                    if(err) return res.json({success: false, err});
+                                    return res.json({success: true});
+                                });
+                            });
+                        } else {
+                            return res.json({success: true, msg: "No comments to delete"});
+                        }
                     });
-                });
+                } else {
+                    return res.json({success: true, msg: "No comments at all"});
+                }
             });
         } else {
             return res.json({msg: "You can't delete this post"});
@@ -122,37 +129,36 @@ router.delete('/delete/:id', (req, res, next) => {
     });
 });
 
-// Favourites - Article liking feature.
-router.put('/like/:articleId', (req, res, next) => {
-    var id = req.params.articleId;
-    Article.findById(id, (err, user) => {
-        if(err) return res.json({msg: "Err while finding article to like", err});
-        if(user.favourites.includes(req.userid)) {
-            Article.findByIdAndUpdate(id, {$pull: {favourites: req.userid}}, {new: true, upsert: true}, (err, updatedArticle) => {
-                if(err) return res.json({msg: "Err while updating likes of article", err});
-                var likes = user.favourites.length;
-                return res.json({likes});
-            });
-        } else {
-            Article.findByIdAndUpdate(id, {$push: {favourites: req.userid}}, {new: true, upsert: true}, (err, updatedArticle) => {
-                if(err) return res.json({msg: "Err while updating likes of article", err});
-                var likes = user.favourites.length;
-                return res.json({likes});
-            });
-        }
-    });
-});
+// // Favourites - Article liking feature.
+// router.put('/like/:articleId', (req, res, next) => {
+//     var id = req.params.articleId;
+//     Article.findById(id, (err, user) => {
+//         if(err) return res.json({msg: "Err while finding article to like", err});
+//         if(user.favourites.includes(req.userid)) {
+//             Article.findByIdAndUpdate(id, {$pull: {favourites: req.userid}}, {new: true, upsert: true}, (err, updatedArticle) => {
+//                 if(err) return res.json({msg: "Err while updating likes of article", err});
+//                 var likes = user.favourites.length;
+//                 return res.json({likes});
+//             });
+//         } else {
+//             Article.findByIdAndUpdate(id, {$push: {favourites: req.userid}}, {new: true, upsert: true}, (err, updatedArticle) => {
+//                 if(err) return res.json({msg: "Err while updating likes of article", err});
+//                 var likes = user.favourites.length;
+//                 return res.json({likes});
+//             });
+//         }
+//     });
+// });
 
 // Articles by users you follow. Your Feed.
 router.get('/following/feed', (req, res, next) => {
-    User.findById(req.userid, (err, user) => {
-        if(err) return res.json({msg: "Err while finding user", err});
-        var arr = [];
+    User.findById(req.userId, (err, user) => {
+        if(err) return res.json({success: false, err});
         user.following.forEach(e => {
-            Article.find({userId: e}, (err, article) => {
-                if(err) return res.json({msg: "Err while finding article of followings."});
-                arr.push(article);
-                arr.length == user.following.length ? res.json({arr}) : "";
+            Article.find({userId: e}, (err, articles) => {
+                console.log(articles);
+                if(err) return res.json({success: false, err});
+                return res.json({articles});
             });
         });
     });
