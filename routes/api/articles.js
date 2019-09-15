@@ -23,23 +23,6 @@ router.get('/:slug', (req, res, next) => {
     });
 });
 
-// // Get articles form tag.
-// router.get('/tag/:tag', (req, res, next) => {
-//     var tag = req.params.tag;
-//     Tag.findOne({tagText: tag}, (err, tag) => {
-//         if(err) return res.json({msg: "Err while finding tag", err});
-//         var articleIdArr = tag.articleId;
-//         var articleArr = [];
-//         articleIdArr.forEach(e => {
-//             Article.find({_id: e}, (err, article) => {
-//                 if(err) return res.json({msg: "Err while finding articles by tag."});
-//                 articleArr.push(article);
-//                 articleArr.length == articleIdArr.length ? res.json({articleArr}) : "";
-//             });
-//         });
-//     });
-// });
-
 // Only logged in user can access the routes below.
 router.use(authToken.verifyToken);
 
@@ -129,27 +112,6 @@ router.delete('/:slug', (req, res, next) => {
     });
 });
 
-// // Favourites - Article liking feature.
-// router.put('/like/:articleId', (req, res, next) => {
-//     var id = req.params.articleId;
-//     Article.findById(id, (err, user) => {
-//         if(err) return res.json({msg: "Err while finding article to like", err});
-//         if(user.favourites.includes(req.userid)) {
-//             Article.findByIdAndUpdate(id, {$pull: {favourites: req.userid}}, {new: true, upsert: true}, (err, updatedArticle) => {
-//                 if(err) return res.json({msg: "Err while updating likes of article", err});
-//                 var likes = user.favourites.length;
-//                 return res.json({likes});
-//             });
-//         } else {
-//             Article.findByIdAndUpdate(id, {$push: {favourites: req.userid}}, {new: true, upsert: true}, (err, updatedArticle) => {
-//                 if(err) return res.json({msg: "Err while updating likes of article", err});
-//                 var likes = user.favourites.length;
-//                 return res.json({likes});
-//             });
-//         }
-//     });
-// });
-
 // Articles by users you follow. Your Feed.
 router.get('/following/feed', (req, res, next) => {
     User.findById(req.userId, (err, user) => {
@@ -165,5 +127,63 @@ router.get('/following/feed', (req, res, next) => {
 
     // Article.find({userId: {$in: user.following}})
 });
+
+// Add comments to an article.
+router.post('/:slug/comments', (req, res, next) => {
+    var slug = req.params.slug;
+    req.body.userId = req.userId;
+    Article.findOne({slug}, (err, article) => {
+        if(err) return res.json({success: false, err});
+        if(!article) return res.json({msg: "No article found"});
+        req.body.articleId = article._id;
+
+        Comment.create(req.body, (err, newComment) => {
+            if(err) return res.json({success: false, err});
+            Article.findByIdAndUpdate(newComment.articleId, {$push: {commentsId: newComment._id}}, {new: true, upsert: false}, (err, updatedUser) => {
+                // console.log(updatedUser);
+                if(err) return res.json({success: false, err});
+                return res.json({success: true, newComment});
+            });
+        });
+    });
+});
+
+// Get comments from article.
+router.get('/:slug/comments', (req, res, next) => {
+    var slug = req.params.slug;
+    Article.findOne({slug}, (err, article) => {
+        if(err) return res.json({success: false, err});
+        if(!article) return res.json({msg: "No article found"});
+        Comment.find({articleId: article._id}, (err, comments) => {
+            if(err) return res.json({success: false, err});
+            return res.json({comments});
+        });
+    });
+});
+
+// Delete a comment from an article.
+router.delete('/:slug/comments/:id', (req, res, next) => {
+    var slug = req.params.slug;
+    var id = req.params.id;
+    var loggedUser = req.userId;
+    console.log(loggedUser);
+    
+    Comment.findById(id, (err, comment) => {
+        if(err) return res.json({success: false, err});
+        console.log(comment.userId);
+        if(loggedUser == comment.userId) {
+            Comment.findByIdAndDelete(id, (err, comment) => {
+                if(err) return res.json({success: false, err});
+                if(!comment) return res.json({msg: "No comment found"});
+                Article.findOneAndUpdate({slug}, {$pull: {commentsId: id}}, {new: true}, (err, article) => {
+                    if(err) return res.json({success: false, err});
+                    return res.json({success: true});
+                });
+            });
+        } else {
+            return res.json({msg: "You can't delete this comment"});
+        }
+    })
+}) ;
 
 module.exports = router;
