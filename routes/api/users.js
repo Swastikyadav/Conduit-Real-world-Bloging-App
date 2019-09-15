@@ -4,6 +4,9 @@ var jwt = require('jsonwebtoken');
 var authToken = require('../../modules/verifyToken');
 var router = express.Router();
 
+// var mongoose = require('mongoose');
+// var User = mongoose.model('User');
+
 // Registration
 router.post('/register', (req, res, next) => {
     User.create(req.body, (err, newUser) => {
@@ -56,7 +59,7 @@ router.put('/follow/:userId', (req, res, next) => {
         if(err) return res.json({msg: "Err while finding user to follow", err});
         if(user.following.includes(id)) {
             User.findByIdAndUpdate(req.userid, {$pull: {following: id}}, {new: true}, (err, updatedUser) => {
-                if(err) return res.json({msg: "Err while updating following of user", err});
+                if(err) return res.status(500).json({msg: "Err while updating following of user", err});
                 var follow = user.following.length;
                 return res.json({follow});
             });

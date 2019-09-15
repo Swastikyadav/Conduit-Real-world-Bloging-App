@@ -23,7 +23,7 @@ router.post('/add/:articleId', (req, res, next) => {
     console.log(req.body);
     Comment.create(req.body, (err, newComment) => {
         if(err) return res.json({msg: "Err while creating new comment.", err});
-        Article.findOneAndUpdate({_id: newComment.articleId}, {$push: {commentsId: newComment.id}}, {new: true, upsert: false}, (err, updatedUser) => {
+        Article.findByIdAndUpdate(newComment.articleId, {$push: {commentsId: newComment.id}}, {new: true, upsert: false}, (err, updatedUser) => {
             // console.log(updatedUser);
             if(err) return res.json({msg: "Err while updating article with array of comments id", err});
             return res.json({msg: "Article update successfull", newComment});

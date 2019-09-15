@@ -156,6 +156,8 @@ router.get('/following/feed', (req, res, next) => {
             });
         });
     });
+
+    // Article.find({userId: {$in: user.following}})
 });
 
 module.exports = router;

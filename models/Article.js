@@ -18,6 +18,7 @@ var articleSchema = new Schema({
         type: String
         // ref: 'Tag'
     },
+    // tags: [String],
     commentsId: {
         type: [Schema.Types.ObjectId],
         ref: 'Comment'
@@ -35,3 +36,5 @@ var articleSchema = new Schema({
 
 var Article = mongoose.model('Article', articleSchema);
 module.exports = Article;
+
+
