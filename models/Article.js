@@ -29,7 +29,7 @@ var articleSchema = new Schema({
         required: true,
         ref: 'User'
     },
-    favourites: {
+    favorites: {
         type: [Schema.Types.ObjectId],
         ref: 'User'
     }

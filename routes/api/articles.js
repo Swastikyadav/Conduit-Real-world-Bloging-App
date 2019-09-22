@@ -186,4 +186,30 @@ router.delete('/:slug/comments/:id', (req, res, next) => {
     })
 }) ;
 
+// Favourite Article.
+router.post('/:slug/favorite', (req, res, next) => {
+    var slug = req.params.slug;
+    Article.findOne({slug}, (err, article) => {
+        if(err) return res.json({success: false, err});
+        if(!article) return res.json({msg: "No article found"});
+        Article.findByIdAndUpdate(article._id, {$push: {favorites: req.userId}}, {new: true}, (err, updatedArticle) => {
+            if(err) return res.json({success: false, err});
+            return res.json({updatedArticle});
+        });
+    });
+});
+
+// UnFavorite an article.
+router.delete('/:slug/favorite', (req, res, next) => {
+    var slug = req.params.slug;
+    Article.findOne({slug}, (err, article) => {
+        if(err) return res.json({success: false, err});
+        if(!article) return res.json({msg: "No article found"});
+        Article.findByIdAndUpdate(article._id, {$pull: {favorites: req.userId}}, {new: true}, (err, updatedArticle) => {
+            if(err) return res.json({success: false, err});
+            return res.json({updatedArticle});
+        });
+    });
+});
+
 module.exports = router;
