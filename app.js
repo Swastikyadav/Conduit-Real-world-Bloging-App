@@ -9,8 +9,6 @@ mongoose.connect('mongodb://localhost/conduit', {useNewUrlParser: true}, (err) =
     err ? console.log(err) : console.log("Connected to database.");
 });
 
-// require('./models/User');
-
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
 
