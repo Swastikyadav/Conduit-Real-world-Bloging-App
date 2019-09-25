@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var logger = require('morgan');
 require('dotenv').config();
 
-mongoose.connect('mongodb://localhost/conduit', {useNewUrlParser: true}, (err) => {
+mongoose.connect(process.env.mongoURI, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
     err ? console.log(err) : console.log("Connected to database.");
 });
 
