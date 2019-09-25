@@ -1,48 +1,77 @@
 # Real-world-Conduit-API - Documentation
 A real world blog app. A clone of Medium. 
 
-## Users Routes
+## Authentication
+```POST /api/users/login```
+<br/>
 
-### Registration & LogIn
-Register - ```api/users/register``` (post request)
-</br>
-LogIn - ```api/users/login``` (post request)
+## Registration
+```POST /api/users```
+<br/>
 
-### Profile Setting
-Profile setting - ```api/users/profile-setting``` (put request)
+## Get Current User
+```GET api/user```
+<br/>
 
-### Follow & UnFollow
-Follow & UnFollow - ```api/users/follow/:userId``` (put request)
+## Update User
+```PUT api/user```
+<br/>
 
-## Articles Routes
+## GET Profile
+```GET /api/profiles/:username```
+<br/>
 
-### Read articles
-Read all articles - ```api/articles``` (get request)
-</br>
-Read single article - ```api/articles/:articleId``` (get request)
-</br>
-Read article by tag - ```api/articles/tag/:tag``` (get request)
+## Follow User
+```POST /api/profiles/:username/follow```
+<br/>
 
-### Crud Operation on Article
-Create new article - ```api/articles/new``` (post request) 
-</br>
-Update an existing article - ```api/articles/update/:articleId``` (put request)
-</br>
-Delete an article - ```api/articles/delete/:articleId``` (delete request)
+## Unfollow User
+```DELETE /api/profiles/:username/follow```
+<br/>
 
-### Favourite / Like an Article
-Favourite & UnFavourite an article - ```api/articles/like/:articleId``` (put request)
+## List Articles
+```GET /api/articles```
+<br/>
 
-### Your Feed - Articles of users you follow
-Your Feed - ```api/articles/following/feed``` (get request)
+## Feed Articles
+```GET /api/articles/feed```
+<br/>
 
-## Comments Routes
+## Get Article
+```GET /api/articles/:slug```
+<br/>
 
-### Crud on Comments
-Read comments with articleId - ```api/comments/:articleId``` (get request)
-</br>
-Add new comment to an article - ```api/comments/add/:articleId``` (post request)
-</br>
-Delete Comments of an article - ```api/comments/delete/:commentId``` (delete request)
+## Create Article
+```POST /api/articles```
+<br/>
 
-#### Author - Swastik Yadav.
+## Update Article
+```PUT /api/articles/:slug```
+<br/>
+
+## Delete Article
+```DELETE /api/articles/:slug```
+<br/>
+
+## Add Comments to an Article
+```POST /api/articles/:slug/comments```
+<br/>
+
+## Get Comment from an article
+```GET /api/articles/:slug/comments```
+<br/>
+
+## Delete Comment
+```DELETE /api/articles/:slug/comments/:id```
+<br/>
+
+## Favorite Article
+```POST /api/articles/:slug/favorite```
+<br/>
+
+## Unfavorite Article
+```DELETE /api/articles/:slug/favorite```
+<br/>
+
+## Get Tags
+```GET /api/tags```
