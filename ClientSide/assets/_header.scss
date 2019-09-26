@@ -1,6 +1,6 @@
 header {
     height: 80px;
-    background: rgba(224, 255, 255, 0.5);
+    background: rgb(224, 255, 255);
     display: flex;
     padding: 5px 15px;
     justify-content: space-between;
@@ -13,6 +13,7 @@ header {
     .logo {
         color: #6BDAED;
         font-size: 25px;
+        text-decoration: none;
     }
 
     .nav-links {
@@ -20,12 +21,13 @@ header {
         ul {
             display: flex;
             justify-content: space-between;
-            a {
-                text-decoration: none;
-            }
             li {
                 list-style: none;
                 color: gray;
+            }
+            li:hover {
+                color: #6BDAED;
+                font-weight: bold;
             }
         }
     }

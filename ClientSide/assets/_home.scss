@@ -1,0 +1,88 @@
+.hero-section {
+    text-align: center;
+    margin-top: 80px;
+    padding: 100px 20px;
+    font-size: 25px;
+    height: 300px;
+    background-image: url("https://www.bypeople.com/wp-content/uploads/2018/06/hd-backgrounds-textures-ultra-hd.png");
+    background-position: center;
+    background-size: cover;
+    color: #fff;
+
+    @media all and (min-width: 768px) {
+        font-size: 35px;
+    }
+}
+
+.global-feed {
+    padding: 10px;
+    margin: 20px 30px;
+    color: #6BDAED;
+    border-bottom: 2px solid #6BDAED;
+    width: 120px;
+}
+
+.feed {
+    .article-card {
+        padding: 10px;
+        border: 1.5px solid #6BDAED;
+        width: 280px;
+        margin: 5px;
+    }
+
+    .userpic {
+        width: 110px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .title,
+    .about,
+    .articlePage {
+        padding: 5px;
+    }
+}
+
+.main {
+    .card {
+        margin: 0 30px;
+    
+        @media all and (min-width: 768px) {
+            width: 70%;
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+
+    .tags {
+        background: #F3F3F3;
+        text-align: center;
+        height: 200px;
+        padding: 2px;
+
+        .tagname {
+            margin: 8px 0;
+            button {
+                color: #fff;
+                background: #687077;
+                width: 80px;
+                margin: 2px;
+                padding: 4px;
+                border: none;
+                border-radius: 50px;
+                cursor: pointer;
+            }
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        @media all and (min-width: 768px) {
+            width: 20%;
+        }
+    }
+
+    @media all and (min-width: 768px) {
+        display: flex;
+    }
+}
