@@ -4,6 +4,11 @@ body {
   font-family: sans-serif;
   margin: 0;
   padding: 0; }
+  * .a,
+  body .a {
+    margin: 0;
+    padding: 0;
+    width: 100px; }
 
 a {
   text-decoration: none; }
@@ -60,14 +65,13 @@ header {
   width: 100%; }
   header .logo {
     color: #6BDAED;
-    font-size: 25px; }
+    font-size: 25px;
+    text-decoration: none; }
   header .nav-links {
     width: 180px; }
     header .nav-links ul {
       display: flex;
       justify-content: space-between; }
-      header .nav-links ul a {
-        text-decoration: none; }
       header .nav-links ul li {
         list-style: none;
         color: gray; }
@@ -92,7 +96,7 @@ header {
     .hero-section {
       font-size: 35px; } }
 
-.active {
+.global-feed {
   padding: 10px;
   margin: 20px 30px;
   color: #6BDAED;

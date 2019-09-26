@@ -1,4 +1,5 @@
 import React from 'react';
+import {NavLink} from 'react-router-dom';
 
 function ArticleCard() {
     return(
@@ -13,7 +14,7 @@ function ArticleCard() {
                     <h3 className="title">Article Title</h3>
                     <p className="about">Small bit about article...</p>
                     <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                        <a href="http://localhost:3000"><small className="articlePage">Read More...</small></a>
+                        <NavLink className="a" to="/"><small className="articlePage">Read More...</small></NavLink>
                         <p style={{padding: '4px', border: '1px solid gray', cursor: 'pointer'}}>Like</p>
                     </div>
                 </div>

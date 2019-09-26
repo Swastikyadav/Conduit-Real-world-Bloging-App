@@ -4,14 +4,15 @@ import Login from './Components/Login';
 import Header from './Components/Navbar';
 import Home from './Components/Home';
 import './App.css';
+import { Route } from 'react-router-dom';
 
 function App() {
   return (
     <>
       <Header />
-      <Home />
-      {/* <Register /> */}
-      {/* <Login /> */}
+      <Route path="/user/register" exact component={Register} />
+      <Route path="/user/login" exact component={Login} />
+      <Route path="/" exact component={Home} />
     </>
   );
 }

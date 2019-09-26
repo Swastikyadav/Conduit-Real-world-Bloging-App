@@ -6,7 +6,7 @@ function Home() {
     return(
         <>
             <Hero />
-            <h4 className="active">Global Feed</h4>
+            <h4 className="global-feed">Global Feed</h4>
             <div className="main">
                 <div className="card">
                     <ArticleCard />
