@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "client": "npm start --prefix ClientSide/conduit",
+    "dev": "concurrently \"npm start\" \"npm run client\""
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
+    "concurrently": "^4.1.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.1.0",
