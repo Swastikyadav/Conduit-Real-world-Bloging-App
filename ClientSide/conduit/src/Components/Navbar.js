@@ -3,12 +3,12 @@ import React from 'react';
 function Header() {
     return(
         <header>
-            <h3 className="logo">Conduit</h3>
+            <a href="/"><h3 className="logo">Conduit</h3></a>
             <div className="nav-links">
                 <ul>
-                    <a href="#"><li>Home</li></a>
-                    <a href="#"><li>Sign in</li></a>
-                    <a href="#"><li>Register</li></a>
+                    <a href="http://localhost:3000"><li>Home</li></a>
+                    <a href="http://localhost:3000"><li>Sign in</li></a>
+                    <a href="http://localhost:3000"><li>Register</li></a>
                 </ul>
             </div>
         </header>

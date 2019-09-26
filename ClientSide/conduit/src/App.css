@@ -49,7 +49,7 @@ a {
 
 header {
   height: 80px;
-  background: rgba(224, 255, 255, 0.5);
+  background: lightcyan;
   display: flex;
   padding: 5px 15px;
   justify-content: space-between;
@@ -71,6 +71,81 @@ header {
       header .nav-links ul li {
         list-style: none;
         color: gray; }
+      header .nav-links ul li:hover {
+        color: #6BDAED;
+        font-weight: bold; }
   @media all and (min-width: 768px) {
     header {
       padding: 0 30px; } }
+
+.hero-section {
+  text-align: center;
+  margin-top: 80px;
+  padding: 100px 20px;
+  font-size: 25px;
+  height: 300px;
+  background-image: url("https://www.bypeople.com/wp-content/uploads/2018/06/hd-backgrounds-textures-ultra-hd.png");
+  background-position: center;
+  background-size: cover;
+  color: #fff; }
+  @media all and (min-width: 768px) {
+    .hero-section {
+      font-size: 35px; } }
+
+.active {
+  padding: 10px;
+  margin: 20px 30px;
+  color: #6BDAED;
+  border-bottom: 2px solid #6BDAED;
+  width: 120px; }
+
+.feed .article-card {
+  padding: 10px;
+  border: 1.5px solid #6BDAED;
+  width: 280px;
+  margin: 5px; }
+
+.feed .userpic {
+  width: 110px;
+  display: flex;
+  justify-content: space-between; }
+
+.feed .title,
+.feed .about,
+.feed .articlePage {
+  padding: 5px; }
+
+.main .card {
+  margin: 0 30px; }
+  @media all and (min-width: 768px) {
+    .main .card {
+      width: 70%;
+      display: flex;
+      flex-wrap: wrap; } }
+
+.main .tags {
+  background: #F3F3F3;
+  text-align: center;
+  height: 200px;
+  padding: 2px; }
+  .main .tags .tagname {
+    margin: 8px 0;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; }
+    .main .tags .tagname button {
+      color: #fff;
+      background: #687077;
+      width: 80px;
+      margin: 2px;
+      padding: 4px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer; }
+  @media all and (min-width: 768px) {
+    .main .tags {
+      width: 20%; } }
+
+@media all and (min-width: 768px) {
+  .main {
+    display: flex; } }
