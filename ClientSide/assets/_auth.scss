@@ -1,0 +1,53 @@
+a {
+    text-decoration: none;
+}
+
+.form-heading,
+.form-para {
+    width: 300px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.form-heading {
+    font-size: 32px;
+    font-weight: normal;
+    margin-top: 150px;
+}
+
+.form-para {
+    color: #6BDAED;
+}
+
+.auth-form {
+    width: 90%;
+    margin: 0 auto;
+
+    input {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    input:focus {
+        border: 2px solid #6BDAED;
+    }
+
+    .submit-btn {
+        width: 150px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: bold;
+        color: #ffffff;
+        border: none;
+        background: #6BDAED;
+    }
+
+    @media all and (min-width: 768px) {
+        width: 50%;
+    }
+}
