@@ -8,10 +8,10 @@ var router = express.Router();
 
 // Read all articles.
 router.get('/', (req, res, next) => {
-    Article.find({}, (err, articles) => {
+    Article.find({}).populate("userId").exec((err, articles) => {
         if(err) return res.json({success: false, err});
         return res.json({articles});
-    })
+    });
 });
 
 // Read single article.
