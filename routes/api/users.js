@@ -9,6 +9,7 @@ var router = express.Router();
 
 // Registration: /api/users
 router.post('/', (req, res, next) => {
+    req.body.profilePicture = "https://static.productionready.io/images/smiley-cyrus.jpg";
     User.create(req.body, (err, user) => {
         if(err) return res.json({success: false, err});
         return res.json({user});

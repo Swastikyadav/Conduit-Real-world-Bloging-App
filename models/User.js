@@ -16,7 +16,10 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
-    profilePicture: String,
+    profilePicture: {
+        type: String,
+        required: true
+    },
     bio: String,
     followers: {
         type: [String]

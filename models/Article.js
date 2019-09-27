@@ -19,7 +19,6 @@ var articleSchema = new Schema({
         type: String
         // ref: 'Tag'
     },
-    // tags: [String],
     commentsId: {
         type: [Schema.Types.ObjectId],
         ref: 'Comment'

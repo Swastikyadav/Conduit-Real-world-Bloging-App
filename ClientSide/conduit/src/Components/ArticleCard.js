@@ -7,7 +7,7 @@ function ArticleCard(props) {
             <section className="feed">
                 <div className="article-card">
                     <div className="userpic">
-                        <img src="https://swastikyadav.com/static/9190270ec82670b045f4c683c0a8ede8/f53aa/profile.png" alt="user" width="50px" height="50px" />
+                        <img src={props.profilePicture} alt="user" width="50px" height="50px" />
                         <p>{props.author}</p>
                     </div>
 

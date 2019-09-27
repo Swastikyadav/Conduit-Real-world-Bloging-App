@@ -6,7 +6,8 @@ class Home extends React.Component {
     constructor() {
         super();
         this.state = {
-            post: ''
+            post: '',
+            populartags: ''
         }
     }
 
@@ -17,11 +18,52 @@ class Home extends React.Component {
                 'Content-Type': 'application/json'
             }
         }).then(res => res.json()).then(data => this.setState({post: data}));
+
+        fetch("http://localhost:3000/api/tags", {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json()).then(data => this.setState({populartags: data}));
+    }
+
+    handleClick = (e) => {
+        e.persist();
+        let articleArr = '';
+        fetch("http://localhost:3000/api/articles", {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json()).then(data => {
+            articleArr = data.articles;
+
+             let articles = articleArr.reduce((acc, cv, i, arr) => {
+                this.state.populartags.tags.forEach((tag, tagIndex) => {
+                    if(tag.tagText === e.target.innerText) {
+                        tag.articleId.forEach((articleid, arIndex) => {
+                            if(cv._id === articleid) {
+                                acc.push(cv);
+                            }
+                        });
+                    }
+                });
+                return acc;
+            }, []);
+
+            this.setState({
+                post: {articles}
+            });
+
+            console.log(articles);
+        });
     }
 
     render() {
-        const {post} = this.state;
+        const {post, populartags} = this.state;
         if(!this.state.post) return '';
+        if(!this.state.populartags) return '';
+        // console.log(this.state.populartags.tags);
         return(
             <>
                 <Hero />
@@ -29,31 +71,26 @@ class Home extends React.Component {
                 <div className="main">
                     <div className="card">
                         {
-                            post.articles.map((article, index) => {
-                                console.log(article);
+                            post.articles.reverse().map((article, index) => {
                                 return <ArticleCard 
                                     key={index}
                                     title={article.title}
                                     about={article.about}
                                     description={article.description}
                                     author={article.userId.username}
+                                    profilePicture={article.userId.profilePicture}
                                 />
                             })
                         }
-                        {/* <ArticleCard /> */}
                     </div>
                     <div className="tags">
                         <h4>Tags</h4>
                         <section className="tagname">
-                            <button>tag 1</button>
-                            <button>tag 2</button>
-                            <button>tag 4</button>
-                            <button>tag 5</button>
-                            <button>tag 6</button>
-                            <button>tag 7</button>
-                            <button>tag 8</button>
-                            <button>tag 9</button>
-                            <button>tag 3</button>
+                            {
+                                populartags.tags.map((tag, index) => {
+                                    return <button onClick={this.handleClick} key={index}>{tag.tagText}</button>
+                                })
+                            }
                         </section>
                     </div>
                 </div>

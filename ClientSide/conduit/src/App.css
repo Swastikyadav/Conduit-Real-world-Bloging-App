@@ -130,7 +130,6 @@ header {
 .main .tags {
   background: #F3F3F3;
   text-align: center;
-  height: 200px;
   padding: 2px; }
   .main .tags .tagname {
     margin: 8px 0;
