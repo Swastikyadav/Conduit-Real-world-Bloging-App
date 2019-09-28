@@ -1,13 +1,16 @@
 import React from 'react';
 import Hero from '../Components/Hero';
 import ArticleCard from '../Components/ArticleCard';
+import FeedTab from './FeedTab'
 
 class Home extends React.Component {
     constructor() {
         super();
         this.state = {
             post: '',
-            populartags: ''
+            populartags: '',
+            activeTag: '',
+            active: 'Global Feed'
         }
     }
 
@@ -28,65 +31,70 @@ class Home extends React.Component {
     }
 
     handleClick = (e) => {
-        e.persist();
-        let articleArr = '';
-        fetch("http://localhost:3000/api/articles", {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => res.json()).then(data => {
-            articleArr = data.articles;
-
-             let articles = articleArr.reduce((acc, cv, i, arr) => {
-                this.state.populartags.tags.forEach((tag, tagIndex) => {
-                    if(tag.tagText === e.target.innerText) {
-                        tag.articleId.forEach((articleid, arIndex) => {
-                            if(cv._id === articleid) {
-                                acc.push(cv);
-                            }
-                        });
-                    }
-                });
-                return acc;
-            }, []);
-
-            this.setState({
-                post: {articles}
-            });
-
-            console.log(articles);
+        let tagName = e.target.innerText;
+        this.setState({
+            active: 'Tag',
+            activeTag: tagName
         });
+    }
+
+    tabClick = (e) => {
+        if(e.target.innerText === 'Global Feed') {
+            this.setState({
+                active: 'Global Feed'
+            });
+        }
     }
 
     render() {
         const {post, populartags} = this.state;
         if(!this.state.post) return '';
-        if(!this.state.populartags) return '';
-        // console.log(this.state.populartags.tags);
+
+        let element = '';
+        if(this.state.active === 'Global Feed') {
+            element = post.articles.reverse().map((article, index) => {
+                return <ArticleCard 
+                    key={index}
+                    title={article.title}
+                    about={article.about}
+                    description={article.description}
+                    author={article.userId.username}
+                    profilePicture={article.userId.profilePicture}
+                />
+            })
+        } else if(this.state.active === 'Tag') {
+            // for(let i = 0; i < populartags.tags.length; i++) {
+                element = populartags.tags.map((tag, i) => {
+                    console.log(tag.articleId);
+                    if(populartags.tags[i].tagText !== this.state.activeTag) return '';
+                    return tag.articleId.map((article, index) => {
+                        return <ArticleCard 
+                        key={index}
+                        title={article.title}
+                        about={article.about}
+                        description={article.description}
+                        author={article.userId.username}
+                        profilePicture={article.userId.profilePicture}
+                    />
+                    });
+                }); 
+            // }
+        }
         return(
             <>
                 <Hero />
-                <h4 className="global-feed">Global Feed</h4>
+                {/* <FeedTab feedName='Your Feed' /> */}
+                <FeedTab feedName='Global Feed' click={this.tabClick} />
+                <FeedTab feedName={this.state.activeTag} />
                 <div className="main">
                     <div className="card">
-                        {
-                            post.articles.reverse().map((article, index) => {
-                                return <ArticleCard 
-                                    key={index}
-                                    title={article.title}
-                                    about={article.about}
-                                    description={article.description}
-                                    author={article.userId.username}
-                                    profilePicture={article.userId.profilePicture}
-                                />
-                            })
-                        }
+                        {element}
                     </div>
                     <div className="tags">
                         <h4>Tags</h4>
                         <section className="tagname">
                             {
+                                !populartags ? '' :
                                 populartags.tags.map((tag, index) => {
                                     return <button onClick={this.handleClick} key={index}>{tag.tagText}</button>
                                 })
