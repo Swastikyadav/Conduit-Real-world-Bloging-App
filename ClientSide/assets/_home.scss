@@ -14,12 +14,19 @@
     }
 }
 
-.global-feed {
-    padding: 10px;
+.tab-container {
+    display: flex;
+    width: 200px;
+    align-items: center;
+    justify-content: space-between;
     margin: 20px 30px;
-    color: #6BDAED;
-    border-bottom: 2px solid #6BDAED;
-    width: 120px;
+    .active-feed {
+        padding: 10px;
+        // margin: 20px 30px;
+        color: #6BDAED;
+        border-bottom: 2px solid #6BDAED;
+        // width: 1px;
+    }
 }
 
 .feed {

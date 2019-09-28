@@ -2,7 +2,7 @@ import React from 'react';
 
 function FeedTab(props) {
     return(
-        <h4 className="global-feed" style={{cursor: 'pointer'}} onClick={props.click}>{props.feedName}</h4>
+        <h4 className={props.className} style={{cursor: 'pointer'}} onClick={props.click}>{props.feedName}</h4>
     );
 }
 

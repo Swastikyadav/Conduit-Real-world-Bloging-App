@@ -83,9 +83,12 @@ class Home extends React.Component {
         return(
             <>
                 <Hero />
-                {/* <FeedTab feedName='Your Feed' /> */}
-                <FeedTab feedName='Global Feed' click={this.tabClick} />
-                <FeedTab feedName={this.state.activeTag} />
+                <div className='tab-container'>
+                    {/* <FeedTab feedName='Your Feed' /> */}
+                    <FeedTab className={this.state.active === 'Global Feed' ? 'active-feed' : ''} feedName='Global Feed' click={this.tabClick} />
+                    <FeedTab className={this.state.active === 'Tag' ? 'active-feed' : ''} feedName={`#${this.state.activeTag}`} />
+
+                </div>
                 <div className="main">
                     <div className="card">
                         {element}
