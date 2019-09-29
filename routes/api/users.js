@@ -9,11 +9,16 @@ var router = express.Router();
 
 // Registration: /api/users
 router.post('/', (req, res, next) => {
-    req.body.profilePicture = "https://static.productionready.io/images/smiley-cyrus.jpg";
-    User.create(req.body, (err, user) => {
-        if(err) return res.json({success: false, err});
-        return res.json({user});
-    });
+    var email = req.body.email;
+    User.findOne({email}, (err, user) => {
+        if(err) return res.json(err);
+        if(user) return res.json({success: false, msg: 'Email is already registered, please Login'});
+        req.body.profilePicture = "https://static.productionready.io/images/smiley-cyrus.jpg";
+        User.create(req.body, (err, user) => {
+            if(err) return res.json({success: false, err});
+            return res.json({user, success: true});
+        });
+    })
 });
 
 // Login: /api/users/login
@@ -24,11 +29,11 @@ router.post('/login', (req, res, next) => {
     // Find uesr into database.
     User.findOne({email}, (err, user) => {
         if(err) return res.json({success: false, err});
-        if(!user) return res.json({msg: "User not registered"});
-        if(!user.validatePassword(pass)) return res.json({msg: "Invalid password"});
+        if(!user) return res.json({success: false, msg: "User not registered, please register"});
+        if(!user.validatePassword(pass)) return res.json({success: false, msg: "Invalid password"});
         // Generate token for user.
         var token = jwt.sign({userId: user._id}, process.env.secret);
-        return res.json({user, token});
+        return res.json({success: true, user, token, msg: 'Successful Login'});
     });
 });
 
