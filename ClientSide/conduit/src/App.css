@@ -15,7 +15,7 @@ a {
 
 .form-heading,
 .form-para {
-  width: 300px;
+  width: 350px;
   margin: 10px auto;
   text-align: center; }
 
@@ -68,13 +68,18 @@ header {
     font-size: 25px;
     text-decoration: none; }
   header .nav-links {
-    width: 180px; }
+    width: 250px; }
     header .nav-links ul {
       display: flex;
       justify-content: space-between; }
       header .nav-links ul li {
         list-style: none;
-        color: gray; }
+        color: gray;
+        padding: 5px;
+        font-size: 14px; }
+        @media all and (min-width: 768px) {
+          header .nav-links ul li {
+            font-size: 17px; } }
       header .nav-links ul li:hover {
         color: #6BDAED;
         font-weight: bold; }

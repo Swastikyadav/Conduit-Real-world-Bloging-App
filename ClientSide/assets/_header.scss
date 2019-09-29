@@ -17,13 +17,18 @@ header {
     }
 
     .nav-links {
-        width: 180px;
+        width: 250px;
         ul {
             display: flex;
             justify-content: space-between;
             li {
                 list-style: none;
                 color: gray;
+                padding: 5px;
+                font-size: 14px;
+                @media all and (min-width: 768px) {
+                    font-size: 17px;
+                }
             }
             li:hover {
                 color: #6BDAED;

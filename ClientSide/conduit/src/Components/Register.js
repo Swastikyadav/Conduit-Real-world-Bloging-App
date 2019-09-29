@@ -25,11 +25,12 @@ class Register extends React.Component {
             })
         }).then(res => res.json()).then(data => {
             if(data.success) {
-                this.setState = {
+                this.setState({
                     username: data.user.username,
                     email: data.user.email,
                     password: data.user.password
-                }
+                });
+                this.props.history.push("/user/login");
             } else {
                 console.log(data.msg)
             }

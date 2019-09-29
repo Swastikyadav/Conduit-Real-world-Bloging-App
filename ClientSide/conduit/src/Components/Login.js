@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import Navbar from './Navbar'
 
 class Login extends React.Component {
     constructor() {
@@ -19,20 +20,16 @@ class Login extends React.Component {
             body: JSON.stringify({
                 email: this.state.loggedUser.email,
                 password: this.state.loggedUser.password,
-                Authorization: this.state.myToken
             })
         }).then(res => res.json()).then(data => {
-            
-            if(data.success) {
-                this.setState = {
-                    loggedUser: data.user,
-                }
-                if(this.state.loggedUser) localStorage.setItem("token", data.token);
-                console.log(this.state);
+            if (data.success) {
+                localStorage.setItem("token", data.token)
+                this.props.history.push("/")
             } else {
                 console.log(data.msg)
             }
-        });
+        })
+        
     }
 
     handleChange = (event) => {
@@ -47,8 +44,9 @@ class Login extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <>
+                <Navbar />
                 <h2 className="form-heading">Login to Conduit</h2>
                 <NavLink to="/user/register"><p className="form-para">Need an account?</p></NavLink>
                 <form className="auth-form" onSubmit={this.handleSubmit} onChange={this.handleChange}>
