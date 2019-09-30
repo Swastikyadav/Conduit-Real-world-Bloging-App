@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import Navbar from './Navbar'
 
-class Register extends React.Component {
+class Login extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -21,20 +22,16 @@ class Register extends React.Component {
             body: JSON.stringify({
                 username: this.state.username,
                 email: this.state.email,
-                password: this.state.password
+                password:  this.state.password
             })
         }).then(res => res.json()).then(data => {
-            if(data.success) {
-                this.setState({
-                    username: data.user.username,
-                    email: data.user.email,
-                    password: data.user.password
-                });
+            if (data.success) {
                 this.props.history.push("/user/login");
             } else {
                 console.log(data.msg)
             }
-        });
+        })
+        
     }
 
     handleChange = (event) => {
@@ -46,19 +43,20 @@ class Register extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <>
-                <h2 className="form-heading">Register to Conduit</h2>
+                <Navbar />
+                <h2 className="form-heading">Signup to Conduit</h2>
                 <NavLink to="/user/login"><p className="form-para">Have an account?</p></NavLink>
-                <form className="auth-form" onSubmit={this.handleSubmit} onChange={this.handleChange}>
-                    <input type="text" name="username" placeholder="Enter UserName" defaultValue={this.state.username} />
-                    <input type="email" name="email" placeholder="Enter Email Address" defaultValue={this.state.email} />
-                    <input type="password" name="password" placeholder="Enter Password" defaultValue={this.state.password} />
-                    <input type="submit" className="submit-btn" value="Register" />
+                <form className="auth-form" onSubmit={this.handleSubmit} >
+                    <input type="text" name="username" placeholder="Enter Your Username" value={this.state.username} onChange={this.handleChange} />
+                    <input type="email" name="email" placeholder="Enter Email Address" value={this.state.email} onChange={this.handleChange} />
+                    <input type="password" name="password" placeholder="Enter Password" value={this.state.password} onChange={this.handleChange} />
+                    <input type="submit" className="submit-btn" value="Signup" />
                 </form>
             </>
         );
     }
 }
 
-export default Register;
+export default Login;
