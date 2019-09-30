@@ -3,20 +3,20 @@ import { NavLink, withRouter } from 'react-router-dom';
 import Navbar from './Navbar'
 
 class Login extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             email: '',
             password: '',
-            loading: false
+            msg: ''
         }
     }
 
     handleSubmit = (event) => {
-        this.setState({
-            loading: true
-        });
         event.preventDefault();
+        // this.setState({
+        //     loading: true
+        // });
         fetch('http://localhost:3000/api/users/login', {
             method: 'POST',
             headers: {
@@ -31,9 +31,11 @@ class Login extends React.Component {
                 this.props.changeUser(data.user);
                 localStorage.setItem("token", data.token);
                 this.props.history.push("/");
-                this.setState({loading: false});
+                // this.setState({loading: false});
             } else {
-                console.log(data.msg)
+                this.setState({
+                    msg: data.msg
+                });
             }
         })
         
@@ -48,13 +50,12 @@ class Login extends React.Component {
     }
 
     render() {
-        return this.state.loading ? (
-            <h2>Loading...</h2>
-        ) : (
+        return(
             <>
                 <Navbar />
                 <h2 className="form-heading">Login to Conduit</h2>
                 <NavLink to="/user/register"><p className="form-para">Need an account?</p></NavLink>
+                <p className="errMsg" style={this.state.msg ? {display: 'block'} : {display: 'none'}}>{this.state.msg}</p>
                 <form className="auth-form" onSubmit={this.handleSubmit} >
                     <input type="email" name="email" placeholder="Enter Email Address" value={this.state.email} onChange={this.handleChange} />
                     <input type="password" name="password" placeholder="Enter Password" value={this.state.password} onChange={this.handleChange} />

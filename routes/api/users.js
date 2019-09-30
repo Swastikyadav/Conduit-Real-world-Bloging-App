@@ -10,6 +10,9 @@ var router = express.Router();
 // Registration: /api/users
 router.post('/', (req, res, next) => {
     var email = req.body.email;
+    var username = req.body.username;
+    var pass = req.body.password;
+    if(!email || !username || !pass) return res.json({success: false, msg: "Please fill in all fields"});
     User.findOne({email}, (err, user) => {
         if(err) return res.json(err);
         if(user) return res.json({success: false, msg: 'Email is already registered, please Login'});
@@ -27,6 +30,7 @@ router.post('/login', (req, res, next) => {
     var pass = req.body.password;
     console.log(req.body);
     // Find uesr into database.
+    if(!email || !pass) return res.json({success: false, msg: "Please fill in all fields"});
     User.findOne({email}, (err, user) => {
         if(err) return res.json({success: false, err});
         if(!user) return res.json({success: false, msg: "User not registered, please register"});

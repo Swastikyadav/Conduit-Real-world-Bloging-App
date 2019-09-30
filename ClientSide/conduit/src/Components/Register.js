@@ -8,7 +8,8 @@ class Login extends React.Component {
         this.state = {
             username: '',
             email: '',
-            password: ''
+            password: '',
+            msg: ''
         }
     }
 
@@ -28,7 +29,9 @@ class Login extends React.Component {
             if (data.success) {
                 this.props.history.push("/user/login");
             } else {
-                console.log(data.msg)
+                this.setState({
+                    msg: data.msg
+                });
             }
         })
         
@@ -48,6 +51,7 @@ class Login extends React.Component {
                 <Navbar />
                 <h2 className="form-heading">Signup to Conduit</h2>
                 <NavLink to="/user/login"><p className="form-para">Have an account?</p></NavLink>
+                <p className="errMsg" style={this.state.msg ? {display: 'block'} : {display: 'none'}}>{this.state.msg}</p>
                 <form className="auth-form" onSubmit={this.handleSubmit} >
                     <input type="text" name="username" placeholder="Enter Your Username" value={this.state.username} onChange={this.handleChange} />
                     <input type="email" name="email" placeholder="Enter Email Address" value={this.state.email} onChange={this.handleChange} />

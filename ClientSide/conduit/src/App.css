@@ -24,13 +24,23 @@ a {
   font-weight: normal;
   margin-top: 150px; }
 
+.errMsg {
+  background: #ff6666;
+  padding: 8px;
+  color: #fff;
+  width: 250px;
+  font-weight: bold;
+  margin: 10px auto;
+  text-align: center; }
+
 .form-para {
   color: #6BDAED; }
 
 .auth-form {
   width: 90%;
   margin: 0 auto; }
-  .auth-form input {
+  .auth-form input,
+  .auth-form textarea {
     display: block;
     width: 100%;
     padding: 15px;
@@ -38,7 +48,8 @@ a {
     border: 1px solid lightgray;
     border-radius: 5px;
     outline: none; }
-  .auth-form input:focus {
+  .auth-form input:focus,
+  .auth-form textarea:focus {
     border: 2px solid #6BDAED; }
   .auth-form .submit-btn {
     width: 150px;
