@@ -14,7 +14,8 @@ var userSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: 3
     },
     profilePicture: {
         type: String,
@@ -24,9 +25,9 @@ var userSchema = new Schema({
     followers: {
         type: [String]
     },
-    following: {
-        type: [String]
-    },
+    following: [{
+        type: String
+    }],
     favorited: [{
         type: Schema.Types.ObjectId,
         ref: 'Article'
