@@ -8,7 +8,7 @@ import NewPost from './Components/Newpost';
 import Setting from './Components/Settings';
 import Profile from './Components/Profile';
 import Page404 from './Components/Page404';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 class App extends React.Component {
   constructor() {
@@ -24,6 +24,7 @@ class App extends React.Component {
 
   logoutUser = () => {
     this.setState({ user: null });
+    this.props.history.push('/')
     localStorage.clear();
   }
 
@@ -67,4 +68,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default withRouter(App);

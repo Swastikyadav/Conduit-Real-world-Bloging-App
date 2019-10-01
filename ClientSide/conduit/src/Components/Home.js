@@ -2,6 +2,7 @@ import React from 'react';
 import Hero from '../Components/Hero';
 import ArticleCard from '../Components/ArticleCard';
 import FeedTab from './FeedTab'
+import myFetch from '../utils/myFetch';
 
 class Home extends React.Component {
     constructor() {
@@ -15,6 +16,9 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
+        // const data = [`http://localhost:3000/api/articles`, `http://localhost:3000/api/tags`];
+        // const promises = data.map(url => myFetch(url));
+        // Promise.all(promises).then(res => console.log(res));
         fetch("http://localhost:3000/api/articles", {
             method: "GET",
             headers: {

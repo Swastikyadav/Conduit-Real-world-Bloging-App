@@ -28,7 +28,7 @@ router.put('/', (req, res, next) => {
         req.body.profilePicture ? user.profilePicture = req.body.profilePicture : "";
         user.save((err, updatedUser) => {
             if(err) return res.json({success: false, err});
-            return res.json({updatedUser});
+            return res.json({success: true, updatedUser});
         })
     })
 });
