@@ -172,3 +172,34 @@ header {
 @media all and (min-width: 768px) {
   .main {
     display: flex; } }
+
+.profilebar {
+  margin: 80px 0;
+  text-align: center;
+  padding: 70px 100px;
+  background: rgba(107, 217, 237, 0.548); }
+  .profilebar h3, .profilebar p {
+    margin: 10px 0; }
+  .profilebar p {
+    text-align: center;
+    color: gray; }
+  .profilebar button {
+    padding: 2px;
+    cursor: pointer; }
+  .profilebar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; }
+
+.myArticle {
+  width: 80%;
+  margin: 0 auto; }
+  .myArticle .tab {
+    width: 200px;
+    display: flex;
+    justify-content: space-between; }
+    .myArticle .tab h4 {
+      cursor: pointer; }
+    .myArticle .tab .active-feed {
+      color: #6BDAED;
+      border-bottom: 2px solid #6BDAED; }

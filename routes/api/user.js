@@ -7,7 +7,12 @@ router.use(authToken.verifyToken);
 
 // Get Current User.
 router.get('/', (req, res, next) => {
-    User.findById(req.userId, (err, user) => {
+    User.findById(req.userId).populate({
+        path: 'articlesId',
+        populate: {
+            path: 'userId'
+        }
+    }).populate('favorited').exec((err, user) => {
         if(err) return res.json({success: false, err});
         return res.json({user});
     });

@@ -194,7 +194,10 @@ router.post('/:slug/favorite', (req, res, next) => {
         if(!article) return res.json({msg: "No article found"});
         Article.findByIdAndUpdate(article._id, {$push: {favorites: req.userId}}, {new: true}, (err, updatedArticle) => {
             if(err) return res.json({success: false, err});
-            return res.json({updatedArticle});
+            User.findByIdAndUpdate(req.userId, {$push: {favorited: article._id}}, {new: true}, (err, updatedUser) => {
+                if(err) return res.json({success: false, err});
+                return res.json({success: true, updatedArticle, updatedUser});
+            });
         });
     });
 });
@@ -207,7 +210,10 @@ router.delete('/:slug/favorite', (req, res, next) => {
         if(!article) return res.json({msg: "No article found"});
         Article.findByIdAndUpdate(article._id, {$pull: {favorites: req.userId}}, {new: true}, (err, updatedArticle) => {
             if(err) return res.json({success: false, err});
-            return res.json({updatedArticle});
+            User.findByIdAndUpdate(req.userId, {$pull: {favorited: article._id}}, {new: true}, (err, updatedUser) => {
+                if(err) return res.json({success: false, err});
+                return res.json({success: true, updatedArticle, updatedUser});
+            });
         });
     });
 });

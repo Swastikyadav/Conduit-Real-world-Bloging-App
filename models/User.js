@@ -27,10 +27,14 @@ var userSchema = new Schema({
     following: {
         type: [String]
     },
-    articlesId: {
-        type: [Schema.Types.ObjectId],
+    favorited: [{
+        type: Schema.Types.ObjectId,
         ref: 'Article'
-    },
+    }],
+    articlesId: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Article'
+    }],
     commentsId: {
         type: [Schema.Types.ObjectId],
         ref: 'Comment'

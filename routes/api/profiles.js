@@ -7,27 +7,16 @@ router.use(authToken.verifyToken);
 
 // Get Profile
 router.get('/:username', (req, res, next) => {
-    var username = req.params.username;
-    User.findOne({username}, (err, user) => {
-        var following;
-        if(user.following.length) {
-            if(user.following.includes(user._id))
-                following = true;
-            else
-                following = false;
-        } else {
-            following = false;
+    let username = req.params.username;
+    User.findOne({username}).populate({
+        path: 'articlesId',
+        populate: {
+            path: 'userId'
         }
-        if(!user) return res.json({success: false, msg: "No user found"});
-        var profile = {
-            "username": user.username,
-            "bio": user.bio,
-            "image": user.profilePicture,
-            "following": following
-        }
+    }).populate('favorited').exec((err, user) => {
         if(err) return res.json({success: false, err});
-        return res.json({profile});
-    }); 
+        return res.json({user});
+    });
 });
 
 // Follow User

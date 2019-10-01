@@ -30,7 +30,7 @@ class Settings extends React.Component {
             })
         }).then(res => res.json()).then(data => {
             if (data.success) {
-                console.log(data);
+                // console.log(data);
                 this.props.history.push("/profile");
             } else {
                 console.log(data);

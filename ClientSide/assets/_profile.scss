@@ -1,0 +1,40 @@
+.profilebar {
+    margin: 80px 0;
+    text-align: center;
+    padding: 70px 100px;
+    background: rgba(107, 217, 237, 0.548);
+    
+    h3,p {
+        margin: 10px 0;
+    }
+    p {
+        text-align: center;
+        color: gray;
+    }
+    button {
+        padding: 2px;
+        cursor: pointer;
+    }
+    img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+}
+
+.myArticle {
+    width: 80%;
+    margin: 0 auto;
+    .tab {
+        width: 200px;
+        display: flex;
+        justify-content: space-between;
+        h4 {
+            cursor: pointer;
+        }
+        .active-feed {
+            color: #6BDAED;
+            border-bottom: 2px solid #6BDAED;
+        }
+    }
+}

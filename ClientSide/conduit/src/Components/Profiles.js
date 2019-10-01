@@ -1,8 +1,8 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import ArticleCard from './ArticleCard';
 
-class Profile extends React.Component {
+class Profiles extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,13 +11,14 @@ class Profile extends React.Component {
             bio: '',
             active: 'My Articles',
             myPosts: '',
-            favPosts: ''
+            favPosts: '',
+            currentUser: false
 
         }
     }
 
     componentDidMount() {
-        fetch("http://localhost:3000/api/user", {
+        fetch(`http://localhost:3000/api/profiles/${this.props.match.params.username}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -31,7 +32,20 @@ class Profile extends React.Component {
                 myPosts: data.user.articlesId,
                 favPosts: data.user.favorited
             });
-            console.log(data);
+        });
+
+        fetch("http://localhost:3000/api/user", {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.token
+            }
+        }).then(res => res.json()).then(data => {
+            if(this.state.username === data.user.username) {
+                this.setState({
+                    currentUser: true
+                });
+            }
         });
     }
 
@@ -43,7 +57,7 @@ class Profile extends React.Component {
     }
 
     render() {
-        const { myPosts, active, favPosts } = this.state;
+        const { myPosts, active, favPosts, currentUser } = this.state;
         let myElement = '';
         let favElement = '';
 
@@ -84,8 +98,16 @@ class Profile extends React.Component {
                     <h3>{this.state.username}</h3>
                     <p>{this.state.bio}</p>
                     <div>
-                        <NavLink to="/profile/settings"><button>Edit Profile</button></NavLink>
-                        <button onClick={this.props.logoutUser}>Logout</button>
+                        {
+                            currentUser ? (
+                                <>
+                                    <NavLink className="a" to="/profile/settings"><button>Edit Profile</button></NavLink>
+                                    <button onClick={this.props.logoutUser}>Logout</button>
+                                </>
+                            ) : (
+                                <button>Follow</button>
+                            )
+                        }
                     </div>
                 </section>
                 <div className="myArticle">
@@ -108,4 +130,4 @@ class Profile extends React.Component {
     }
 }
 
-export default Profile;
+export default withRouter(Profiles);

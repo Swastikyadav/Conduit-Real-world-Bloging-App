@@ -6,7 +6,7 @@ import Home from './Components/Home';
 import './App.css';
 import NewPost from './Components/Newpost';
 import Setting from './Components/Settings';
-import Profile from './Components/Profile';
+import Profiles from './Components/Profiles';
 import Page404 from './Components/Page404';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
@@ -47,7 +47,7 @@ class App extends React.Component {
         <Route path="/" exact component={Home} />
         <Route path="/article/new" exact component={NewPost} />
         <Route path="/profile/settings" exact component={Setting} />
-        <Route path="/profile" exact render={() => <Profile logoutUser={this.logoutUser} />} />
+        <Route path="/profiles/:username" render={() => <Profiles logoutUser={this.logoutUser} />} />
         <Route>
           <Page404 />
         </Route>
