@@ -7,10 +7,23 @@ function ArticleCard(props) {
             <section className="feed">
                 <div className="article-card">
                     <div className="userpic">
-                        <NavLink className="a" to={`/profiles/${props.author}`}>
-                            <img src={props.profilePicture} alt="user" width="50px" height="50px" />
-                        </NavLink>
-                        <NavLink className="a" to={`/profiles/${props.author}`}><p>{props.author}</p></NavLink>
+                        {
+                            localStorage.token ? (
+                                <>
+                                    <NavLink className="a" to={`/profiles/${props.author}`}>
+                                        <img src={props.profilePicture} alt="user" width="50px" height="50px" />
+                                    </NavLink>
+                                    <NavLink className="a" to={`/profiles/${props.author}`}><p>{props.author}</p></NavLink>
+                                </>
+                            ) : (
+                                <>
+                                    <NavLink className="a" to={`/user/login`}>
+                                        <img src={props.profilePicture} alt="user" width="50px" height="50px" />
+                                    </NavLink>
+                                    <NavLink className="a" to={`/user/login`}><p>{props.author}</p></NavLink>
+                                </>
+                            )
+                        }
                     </div>
 
                     <h3 className="title">{props.title}</h3>

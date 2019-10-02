@@ -29,24 +29,25 @@ class Home extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ post: data });
-
-        fetch("http://localhost:3000/api/user", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: localStorage.token
-          }
-        })
-          .then(res => res.json())
-          .then(currentuUer => {
-            let yourFeed = "";
-            yourFeed = this.state.post.articles.filter((article, index) => {
-              return article.userId.followers.includes(currentuUer.user._id)
-                ? article
-                : "";
+        if (localStorage.token) {
+          fetch("http://localhost:3000/api/user", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: localStorage.token
+            }
+          })
+            .then(res => res.json())
+            .then(currentUer => {
+              let yourFeed = "";
+              yourFeed = this.state.post.articles.filter((article, index) => {
+                return article.userId.followers.includes(currentUer.user._id)
+                  ? article
+                  : "";
+              });
+              this.setState({ feed: yourFeed });
             });
-            this.setState({ feed: yourFeed });
-          });
+        }
       });
 
     fetch("http://localhost:3000/api/tags", {
