@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 class SingleArticle extends React.Component {
   constructor() {
@@ -42,17 +43,22 @@ class SingleArticle extends React.Component {
   }
 
   deleteArticle = () => {
-      fetch(`http://localhost:3000/api/articles/${this.props.match.params.slug}`, {
-          method: "DELETE",
-          headers: {
-              'Content-Type': 'application/json',
-              Authorization: localStorage.token
-          }
-      }).then(res => res.json()).then(data => {
-          console.log(data);
-          this.props.history.push('/');
+    fetch(
+      `http://localhost:3000/api/articles/${this.props.match.params.slug}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.token
+        }
+      }
+    )
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        this.props.history.push("/");
       });
-  }
+  };
 
   render() {
     if (this.state.singleArticle) {
@@ -72,7 +78,9 @@ class SingleArticle extends React.Component {
             </h5>
             {this.state.currentUser ? (
               <div>
-                <button>Edit Article</button>
+                <NavLink to={`/article/update/${this.state.singleArticle.article.slug}`}>
+                  <button>Edit Article</button>
+                </NavLink>
                 <button onClick={this.deleteArticle}>Delete Article</button>
               </div>
             ) : (
@@ -80,7 +88,7 @@ class SingleArticle extends React.Component {
             )}
           </section>
           <div className="articleContent">
-              {this.state.singleArticle.article.description}
+            {this.state.singleArticle.article.description}
           </div>
         </>
       );

@@ -9,6 +9,7 @@ import Setting from './Components/Settings';
 import Profiles from './Components/Profiles';
 import Page404 from './Components/Page404';
 import SingleArticle from './Components/SingleArticle';
+import UpdateArticle from './Components/UpdateArticle';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 class App extends React.Component {
@@ -51,6 +52,7 @@ class App extends React.Component {
         <Route path="/profile/settings" exact component={Setting} />
         <Route path="/profiles/:username" render={() => <Profiles logoutUser={this.logoutUser} />} />
         <Route path="/article/:slug" exact component={SingleArticle} />
+        <Route path="/article/update/:slug" exact component={UpdateArticle} />
         <Route>
           <Page404 />
         </Route>
