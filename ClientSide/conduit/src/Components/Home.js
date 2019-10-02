@@ -27,7 +27,27 @@ class Home extends React.Component {
       }
     })
       .then(res => res.json())
-      .then(data => this.setState({ post: data }));
+      .then(data => {
+        this.setState({ post: data });
+
+        fetch("http://localhost:3000/api/user", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.token
+          }
+        })
+          .then(res => res.json())
+          .then(currentuUer => {
+            let yourFeed = "";
+            yourFeed = this.state.post.articles.filter((article, index) => {
+              return article.userId.followers.includes(currentuUer.user._id)
+                ? article
+                : "";
+            });
+            this.setState({ feed: yourFeed });
+          });
+      });
 
     fetch("http://localhost:3000/api/tags", {
       method: "GET",
@@ -37,20 +57,6 @@ class Home extends React.Component {
     })
       .then(res => res.json())
       .then(data => this.setState({ populartags: data }));
-
-    fetch("http://localhost:3000/api/articles/following/feed", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.token
-      }
-    })
-      .then(res => res.json())
-      .then(feed => {
-        this.setState({
-          feed: feed.articles
-        });
-      });
   }
 
   handleClick = e => {
@@ -91,7 +97,6 @@ class Home extends React.Component {
           />
         );
       });
-      console.log(element);
     } else if (this.state.active === "Tag") {
       // for(let i = 0; i < populartags.tags.length; i++) {
       element = populartags.tags.map((tag, i) => {
@@ -124,7 +129,6 @@ class Home extends React.Component {
           />
         );
       });
-      console.log(feed);
     }
     return (
       <>
@@ -132,9 +136,10 @@ class Home extends React.Component {
         <div className="tab-container">
           {localStorage.token ? (
             <FeedTab
-                className={this.state.active === "Your Feed" ? "active-feed" : ""}
-                feedName="Your Feed"
-                click={this.tabClick} />
+              className={this.state.active === "Your Feed" ? "active-feed" : ""}
+              feedName="Your Feed"
+              click={this.tabClick}
+            />
           ) : (
             ""
           )}

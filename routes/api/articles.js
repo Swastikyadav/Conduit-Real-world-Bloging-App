@@ -118,9 +118,8 @@ router.get('/following/feed', (req, res, next) => {
         if(err) return res.json({success: false, err});
         user.following.forEach(e => {
             Article.find({userId: e}).populate('userId').exec((err, articles) => {
-                console.log(articles);
                 if(err) return res.json({success: false, err});
-                return res.json({articles});
+                return res.json({success: true, articles});
             });
         });
     });
