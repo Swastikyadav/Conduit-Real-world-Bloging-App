@@ -17,9 +17,9 @@ router.get('/', (req, res, next) => {
 // Read single article.
 router.get('/:slug', (req, res, next) => {
     var slug = req.params.slug;
-    Article.findOne({slug}, (err, article) => {
+    Article.findOne({slug}).populate('userId').exec((err, article) => {
         if(err) return res.json({success: false, err});
-        return res.json({article});
+        return res.json({success: true, article});
     });
 });
 

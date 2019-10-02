@@ -120,6 +120,7 @@ class Profiles extends React.Component {
             description={article.description}
             author={article.userId.username}
             profilePicture={article.userId.profilePicture}
+            slug={article.slug}
           />
         );
       });

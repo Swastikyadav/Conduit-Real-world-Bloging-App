@@ -8,6 +8,7 @@ import NewPost from './Components/Newpost';
 import Setting from './Components/Settings';
 import Profiles from './Components/Profiles';
 import Page404 from './Components/Page404';
+import SingleArticle from './Components/SingleArticle';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
 class App extends React.Component {
@@ -34,6 +35,7 @@ class App extends React.Component {
         <Route path="/" exact component={Home} />
         <Route path="/user/register" exact component={Register} />
         <Route path="/user/login" exact render={() => <Login changeUser={this.changeUser} />} />
+        <Route path="/article/:slug" exact component={SingleArticle} />
         <Route>
           <Page404 />
         </Route>
@@ -48,6 +50,7 @@ class App extends React.Component {
         <Route path="/article/new" exact component={NewPost} />
         <Route path="/profile/settings" exact component={Setting} />
         <Route path="/profiles/:username" render={() => <Profiles logoutUser={this.logoutUser} />} />
+        <Route path="/article/:slug" exact component={SingleArticle} />
         <Route>
           <Page404 />
         </Route>
