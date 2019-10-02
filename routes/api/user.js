@@ -35,7 +35,7 @@ router.put('/', (req, res, next) => {
             if(err) return res.json({success: false, err});
             return res.json({success: true, updatedUser});
         })
-    })
-});
+    });
+})
 
 module.exports = router;

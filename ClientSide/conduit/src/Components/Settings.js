@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./Navbar";
+import { withRouter } from 'react-router-dom';
 
 class Settings extends React.Component {
   constructor() {
@@ -9,8 +10,7 @@ class Settings extends React.Component {
       username: "",
       bio: "",
       email: "",
-      password: "",
-      currentUser: ""
+      password: ""
     };
   }
 
@@ -34,24 +34,10 @@ class Settings extends React.Component {
       .then(data => {
         if (data.success) {
           // console.log(data);
-          this.props.history.push(`/profiles/${this.state.currentUser}`);
+          this.props.history.push(`/profiles/${this.state.username}`);
         } else {
           console.log(data);
         }
-      });
-
-    fetch("http://localhost:3000/api/user", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.token
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        this.setState({
-          currentUser: data.user.username
-        });
       });
   };
 
@@ -112,4 +98,4 @@ class Settings extends React.Component {
   }
 }
 
-export default Settings;
+export default withRouter(Settings);
