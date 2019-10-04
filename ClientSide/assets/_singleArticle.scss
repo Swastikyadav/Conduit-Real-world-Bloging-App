@@ -1,0 +1,31 @@
+.articleContent {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.comment-section {
+    width: 60%;
+    margin: 10px auto;
+    border: 1px solid gray;
+    text-align: center;
+    textarea {
+        width: 100%;
+        padding: 10px;
+    }
+    input {
+        color: #fff;
+        background: blue;
+        padding: 8px 20px;
+        margin: 5px;
+        border: 0;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+}
+
+.articleComments {
+    width: 60%;
+    margin: 10px auto;
+    border: 1px solid gray;
+    padding: 5px;
+}

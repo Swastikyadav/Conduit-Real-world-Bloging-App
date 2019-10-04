@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
 // Read single article.
 router.get('/:slug', (req, res, next) => {
     var slug = req.params.slug;
-    Article.findOne({slug}).populate('userId').exec((err, article) => {
+    Article.findOne({slug}).populate('userId').populate('commentsId').exec((err, article) => {
         if(err) return res.json({success: false, err});
         return res.json({success: true, article});
     });
@@ -153,7 +153,7 @@ router.get('/:slug/comments', (req, res, next) => {
     Article.findOne({slug}, (err, article) => {
         if(err) return res.json({success: false, err});
         if(!article) return res.json({msg: "No article found"});
-        Comment.find({articleId: article._id}, (err, comments) => {
+        Comment.find({articleId: article._id}).populate('userId').exec((err, comments) => {
             if(err) return res.json({success: false, err});
             return res.json({comments});
         });

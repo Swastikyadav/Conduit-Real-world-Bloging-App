@@ -19,10 +19,10 @@ var articleSchema = new Schema({
         type: String
         // ref: 'Tag'
     },
-    commentsId: {
-        type: [Schema.Types.ObjectId],
+    commentsId: [{
+        type: Schema.Types.ObjectId,
         ref: 'Comment'
-    },
+    }],
     userId: {
         type: Schema.Types.ObjectId,
         required: true,

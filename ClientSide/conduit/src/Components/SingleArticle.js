@@ -6,7 +6,8 @@ class SingleArticle extends React.Component {
     super();
     this.state = {
       singleArticle: "",
-      currentUser: false,
+      currentUser: "",
+      isCurrentUser: false,
       comments: "",
       newComment: ""
     };
@@ -29,6 +30,7 @@ class SingleArticle extends React.Component {
         this.setState({
           singleArticle: article
         });
+        console.log(this.state);
         fetch("http://localhost:3000/api/user", {
           method: "GET",
           headers: {
@@ -39,9 +41,29 @@ class SingleArticle extends React.Component {
           .then(res => res.json())
           .then(userData => {
             if (userData.user.username === article.article.userId.username) {
-              this.setState({ currentUser: true });
+              this.setState({ isCurrentUser: true });
             }
+            this.setState({
+              currentUser: userData.user
+            });
           });
+      });
+    fetch(
+      `http://localhost:3000/api/articles/${this.props.match.params.slug}/comments`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.token
+        }
+      }
+    )
+      .then(res => res.json())
+      .then(comment => {
+        this.setState({
+          comments: comment.comments
+        });
+        console.log(this.state);
       });
   }
 
@@ -107,7 +129,7 @@ class SingleArticle extends React.Component {
             <h5>
               Article By: {this.state.singleArticle.article.userId.username}
             </h5>
-            {this.state.currentUser ? (
+            {this.state.isCurrentUser ? (
               <div>
                 <NavLink
                   to={`/article/update/${this.state.singleArticle.article.slug}`}
@@ -134,20 +156,46 @@ class SingleArticle extends React.Component {
             ></textarea>
             <input type="submit" value="Post" />
           </form>
-          <div className="articleComments">
-            <p>Commentes by users</p>
-            <hr />
-            <div
-              style={{
-                display: "flex",
-                width: "200px",
-                justifyContent: "space-between"
-              }}
-            >
-              <img src="" alt="userpic" />
-              <p>Username</p>
-            </div>
-          </div>
+          
+            {this.state.comments
+              ? this.state.comments.map(comm => {
+                  return (
+                    <div className="articleComments">
+                    <div key={comm._id}>
+                      <p style={{ padding: "20px" }}>{comm.commentText}</p>
+                      <hr />
+                      <div
+                        style={{
+                          display: "flex",
+                          width: "80%",
+                          margin: '0 auto',
+                          textAlign: 'center',
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        <img
+                          style={{ width: "30px", height: "30px" }}
+                          src={comm.userId.profilePicture}
+                          alt="userpic"
+                        />
+                        <p>{comm.userId.username}</p>
+                        {
+                        this.state.currentUser.username === comm.userId.username ? (
+                          <button style={{
+                            padding: "8px",
+                            margin: '5px',
+                            border: 'none',
+                            color: '#fff',
+                            background: 'red',
+                            borderRadius: '5px'
+                          }}>Delete</button>
+                        ) : ""}
+                      </div>
+                    </div>
+                    </div>
+                  );
+                })
+              : ""}
         </>
       );
     } else {
